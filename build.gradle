@@ -31,6 +31,6 @@ repositories {
 
 dependencies {
    	compile 'junit:junit:4.12'
-   	compile 'org.testng:testng:6.9.13.6'
+   	compile 'org.testng:testng:6.10'
    	compile 'org.seleniumhq.selenium:selenium-java:3.6.0'
 }
