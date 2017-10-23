@@ -6,15 +6,21 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
+
+import com.sample.framework.Configuration;
+import com.sample.framework.Driver;
 
 public class SampleSearchTest {
 
     private WebDriver driver;
 
     @Before
-    public void setUp() {
-        driver = new ChromeDriver();
-        driver.get("http://booking.com/");
+    public void setUp() throws Exception {
+        DesiredCapabilities cap = new DesiredCapabilities();
+        Driver.add(Configuration.get("browser"), cap);
+        driver = Driver.current();
+        driver.get(Configuration.get("url"));
     }
     
     @After

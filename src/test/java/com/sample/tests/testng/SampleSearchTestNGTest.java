@@ -2,21 +2,24 @@ package com.sample.tests.testng;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+
+import com.sample.framework.Configuration;
+import com.sample.framework.Driver;
 
 public class SampleSearchTestNGTest {
 
     private WebDriver driver;
 
     @BeforeMethod(alwaysRun = true)
-    public void setUp() {
-        driver = new ChromeDriver();
-        driver.get("http://booking.com/");
+    public void setUp() throws Exception {
+        DesiredCapabilities cap = new DesiredCapabilities();
+        Driver.add(Configuration.get("browser"), cap);
+        driver = Driver.current();
+        driver.get(Configuration.get("url"));
     }
     
     @AfterMethod(alwaysRun = true)
