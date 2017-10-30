@@ -40,5 +40,6 @@ public class SampleSearchTest {
                                                 .click(SearchResultsPage.class);
         searchResultsPage.editDestination.click();
         Assert.assertTrue(searchResultsPage.isTextPresent("London"));
+        searchResultsPage.captureScreenShot("./image-London.png");
     }
 }
