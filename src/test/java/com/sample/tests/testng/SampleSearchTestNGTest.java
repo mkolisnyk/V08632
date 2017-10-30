@@ -9,8 +9,8 @@ import org.testng.annotations.Test;
 
 import com.sample.framework.Configuration;
 import com.sample.framework.Driver;
-import com.sample.framework.controls.Control;
-import com.sample.framework.controls.Edit;
+import com.sample.framework.ui.controls.Control;
+import com.sample.framework.ui.controls.Edit;
 
 public class SampleSearchTestNGTest {
 

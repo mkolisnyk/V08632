@@ -1,4 +1,4 @@
-package com.sample.framework.controls;
+package com.sample.framework.ui.controls;
 
 import org.junit.Assert;
 
