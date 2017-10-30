@@ -71,4 +71,9 @@ public class SampleSearchTestNGTest {
     public void testSampleSearchClassProvider(String destination, boolean isBusiness) throws Exception {
         sampleSearch(destination, isBusiness);
     }
+    @Parameters({"destination", "isBusiness"})
+    @Test
+    public void testParamsFromTestNGXML(String destination, String isBusiness) throws Exception {
+        sampleSearch(destination, isBusiness.equalsIgnoreCase("true"));
+    }
 }

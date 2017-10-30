@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite guice-stage="DEVELOPMENT" name="Parameterized suite [Default suite]">
+  <parameter name="destination"  value="Bristol"/>
+  <parameter name="isBusiness"  value="false"/>
+  
+  <test name="Default test">
+    <classes>
+      <class name="com.sample.tests.testng.SampleSearchTestNGTest">
+        <methods>
+          <include name="testParamsFromTestNGXML" />
+          <include name="setUp"/>
+          <include name="tearDown"/>
+        </methods>
+      </class>
+    </classes>
+  </test>
+</suite>
