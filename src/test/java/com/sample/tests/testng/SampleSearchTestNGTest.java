@@ -6,6 +6,8 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import com.sample.framework.Configuration;
@@ -27,22 +29,46 @@ public class SampleSearchTestNGTest {
         driver = Driver.current();
         driver.get(Configuration.get("url"));
     }
-    
+
     @AfterMethod(alwaysRun = true)
     public void tearDown() {
         driver.quit();
     }
-    @Test
-    public void testSampleSearch() throws Exception {
+
+    @DataProvider(name = "inclass_provider")
+    public Object[][] createData() {
+        return new Object[][] {
+            { "London", true },
+            { "Manchester", false }
+        };
+    }
+    public static class StaticProvider {
+        @DataProvider(name = "sample_provider")
+        public static Object[][] staticData() {
+            return new Object[][] {
+                { "Leeds", true },
+                { "Newcastle", false }
+            };
+        }
+    }
+    private void sampleSearch(String destination, boolean isBusiness) throws Exception {
         SearchPage searchPage = PageFactory.init(driver, SearchPage.class);
-        searchPage.editDestination.setText("London");
+        searchPage.editDestination.setText(destination);
         searchPage.buttonDownShevron.click();
         searchPage.buttonTodaysDate.click();
-        searchPage.radioBusiness.click();
-        SearchResultsPage searchResultsPage = searchPage.buttonSubmit
-                                                .click(SearchResultsPage.class);
+        SearchResultsPage searchResultsPage = searchPage
+                .setTravelPurpose(isBusiness).buttonSubmit.click(SearchResultsPage.class);
         searchResultsPage.editDestination.click();
-        Assert.assertTrue(searchResultsPage.isTextPresent("London"));
-        searchResultsPage.captureScreenShot("./image-London.png");
+        Assert.assertTrue(searchResultsPage.isTextPresent(destination));
+        searchResultsPage.captureScreenShot("./image-" + destination + ".png");
+    }
+    
+    @Test(dataProvider = "inclass_provider")
+    public void testSampleSearchFromTheSameClass(String destination, boolean isBusiness) throws Exception {
+        sampleSearch(destination, isBusiness);
+    }
+    @Test(dataProvider = "sample_provider", dataProviderClass = StaticProvider.class)
+    public void testSampleSearchClassProvider(String destination, boolean isBusiness) throws Exception {
+        sampleSearch(destination, isBusiness);
     }
 }
