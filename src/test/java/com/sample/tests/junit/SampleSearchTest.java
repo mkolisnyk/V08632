@@ -9,6 +9,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 
 import com.sample.framework.Configuration;
 import com.sample.framework.Driver;
+import com.sample.framework.ui.PageFactory;
 import com.sample.tests.pages.SearchPage;
 import com.sample.tests.pages.SearchResultsPage;
 
@@ -29,14 +30,14 @@ public class SampleSearchTest {
         driver.quit();
     }
     @Test
-    public void testSampleSearch() {
-        SearchPage searchPage = new SearchPage(driver);
+    public void testSampleSearch() throws Exception {
+        SearchPage searchPage = PageFactory.init(driver, SearchPage.class);
         searchPage.editDestination.setText("London");
         searchPage.buttonDownShevron.click();
         searchPage.buttonTodaysDate.click();
         searchPage.radioBusiness.click();
-        searchPage.buttonSubmit.click();
-        SearchResultsPage searchResultsPage = new SearchResultsPage(driver);
+        SearchResultsPage searchResultsPage = searchPage.buttonSubmit
+                                                .click(SearchResultsPage.class);
         searchResultsPage.editDestination.click();
         Assert.assertTrue(searchResultsPage.isTextPresent("London"));
     }

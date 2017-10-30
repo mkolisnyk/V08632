@@ -11,6 +11,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.sample.framework.Configuration;
 import com.sample.framework.ui.Page;
+import com.sample.framework.ui.PageFactory;
 
 public class Control {
     protected static final long TIMEOUT = Configuration.timeout();
@@ -67,6 +68,10 @@ public class Control {
                 "Element isn't visible: " + this.locator.toString(),
                 visible());
         this.element().click();
+    }
+    public <T extends Page> T click(Class<T> pageClass) throws Exception {
+        	this.click();
+        	return PageFactory.init(this.getDriver(), pageClass);
     }
     public String getText() {
         	Assert.assertTrue("Unable to find element with locator: " + this.getLocator(), this.exists());
