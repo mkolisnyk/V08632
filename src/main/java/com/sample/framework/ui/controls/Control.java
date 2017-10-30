@@ -10,29 +10,33 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.sample.framework.Configuration;
+import com.sample.framework.ui.Page;
 
 public class Control {
     protected static final long TIMEOUT = Configuration.timeout();
-    private WebDriver driver;
+    private Page parent;
     private By locator;
-    public Control(WebDriver driverValue, By locatorValue) {
-        this.driver = driverValue;
+    public Control(Page parentValue, By locatorValue) {
+        this.parent = parentValue;
         this.locator = locatorValue;
     }
     public WebDriver getDriver() {
-        return driver;
+        return parent.getDriver();
     }
-    public By getLocator() {
+    public Page getParent() {
+		return parent;
+	}
+	public By getLocator() {
 		return locator;
 	}
 	public WebElement element() {
-        return driver.findElement(locator);
+        return getDriver().findElement(locator);
     }
 	public WebElement element(int index) {
-        return driver.findElements(locator).get(index);
+        return getDriver().findElements(locator).get(index);
     }
     public boolean exists(long timeout) {
-        WebDriverWait wait = new WebDriverWait(driver, timeout);
+        WebDriverWait wait = new WebDriverWait(getDriver(), timeout);
         try {
             wait.until(ExpectedConditions.presenceOfElementLocated(locator));
         } catch (TimeoutException e) {
@@ -41,7 +45,7 @@ public class Control {
         return true;
     }
     public boolean visible(long timeout) {
-        WebDriverWait wait = new WebDriverWait(driver, timeout);
+        WebDriverWait wait = new WebDriverWait(getDriver(), timeout);
         try {
             wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
         } catch (TimeoutException e) {
