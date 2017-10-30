@@ -35,14 +35,25 @@ public class Configuration {
             reader.close();
         }
     }
-    public static String get(String option) throws IOException {
+    public static String get(String option) {
         if (properties == null) {
-            load();
+            try {
+                load();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         String value = properties.getProperty(option);
         if (value == null) {
             return "";
         }
         return value;
+    }
+    public static long timeout() {
+        String value = get("timeout");
+        if (value == null || value.trim().equals("")) {
+            return 60L;
+        }
+        return Long.parseLong(value.trim());
     }
 }

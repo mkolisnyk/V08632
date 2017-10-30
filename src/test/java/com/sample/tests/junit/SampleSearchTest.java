@@ -10,6 +10,8 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 
 import com.sample.framework.Configuration;
 import com.sample.framework.Driver;
+import com.sample.framework.controls.Control;
+import com.sample.framework.controls.Edit;
 
 public class SampleSearchTest {
 
@@ -29,13 +31,17 @@ public class SampleSearchTest {
     }
     @Test
     public void testSampleSearch() {
-        driver.findElement(By.id("ss")).click();
-        driver.findElement(By.id("ss")).clear();
-        driver.findElement(By.id("ss")).sendKeys("London");
-        driver.findElement(By.cssSelector("i.sb-date-field__chevron.bicon-downchevron")).click();
-        driver.findElement(By.xpath("//td[contains(@class, 'c2-day-s-today')]")).click();
-        driver.findElement(By.name("sb_travel_purpose")).click();
-        driver.findElement(By.xpath("//button[@type='submit']")).click();
-        driver.findElement(By.id("ss")).click();
+        Edit editDestination = new Edit(driver, By.id("ss"));
+        Control buttonDownShevron = new Control(driver, By.cssSelector("i.sb-date-field__chevron.bicon-downchevron"));
+        Control buttonTodaysDate = new Control(driver, By.xpath("//td[contains(@class, 'c2-day-s-today')]"));
+        Control radioBusiness = new Control(driver, By.name("sb_travel_purpose"));
+        Control buttonSubmit = new Control(driver, By.xpath("//button[@type='submit']"));
+        
+        editDestination.setText("London");
+        buttonDownShevron.click();
+        buttonTodaysDate.click();
+        radioBusiness.click();
+        buttonSubmit.click();
+        editDestination.click();
     }
 }
