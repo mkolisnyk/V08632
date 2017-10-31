@@ -1,5 +1,9 @@
 package com.sample.tests.testng;
 
+import java.io.IOException;
+
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.methods.GetMethod;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -50,6 +54,27 @@ public class SampleSearchTestNGTest {
                 { "Newcastle", false }
             };
         }
+    }
+    @DataProvider(name = "file_provider")
+    public Object[][] getDataFromFile() {
+        return null;
+    }
+    @DataProvider(name = "service_provider")
+    public Object[][] getDataFromService() {
+        HttpClient client = new HttpClient();
+
+        //Instantiate a GET HTTP method
+        GetMethod method = new GetMethod("http://localhost:4999/test");
+        String result = "";
+        try {
+            int statusCode = client.executeMethod(method);
+            result = method.getResponseBodyAsString();
+            method.releaseConnection();
+            System.out.println(statusCode);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
     private void sampleSearch(String destination, boolean isBusiness) throws Exception {
         SearchPage searchPage = PageFactory.init(driver, SearchPage.class);
