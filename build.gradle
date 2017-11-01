@@ -35,5 +35,7 @@ dependencies {
    	compile 'org.seleniumhq.selenium:selenium-java:3.6.0'
    	compile group: 'commons-io', name: 'commons-io', version: '2.6'
    	compile 'com.sparkjava:spark-core:2.5.3'
-   	compile group: 'commons-httpclient', name: 'commons-httpclient', version: '3.1'
+   	compile 'commons-httpclient:commons-httpclient:3.1'
+   	compile 'commons-lang:commons-lang:2.6'
+   	compile 'org.postgresql:postgresql:42.1.4'
 }

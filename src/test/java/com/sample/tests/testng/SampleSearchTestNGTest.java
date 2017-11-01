@@ -1,9 +1,20 @@
 package com.sample.tests.testng;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.List;
+import java.util.Properties;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.ArrayUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -56,8 +67,13 @@ public class SampleSearchTestNGTest {
         }
     }
     @DataProvider(name = "file_provider")
-    public Object[][] getDataFromFile() {
-        return null;
+    public Object[][] getDataFromFile() throws IOException {
+        List<String> content = FileUtils.readLines(new File("./src/test/resources/data.csv"), Charset.defaultCharset());
+        Object[][] data = new Object[][] {};
+        for (String line : content) {
+            data = (Object[][]) ArrayUtils.add(data, line.split("\t"));
+        }
+        return data;
     }
     @DataProvider(name = "service_provider")
     public Object[][] getDataFromService() {
@@ -74,7 +90,43 @@ public class SampleSearchTestNGTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        String[] content = result.split("\n");
+        Object[][] data = new Object[][] {};
+        for (String line : content) {
+            data = (Object[][]) ArrayUtils.add(data, line.split("\t"));
+        }
+        return data;
+    }
+    @DataProvider(name = "db_provider")
+    public Object[][] getDataFromDB() throws SQLException {
+        Object[][] data = new Object[][] {};
+        Properties connectionProps = new Properties();
+        connectionProps.put("user", "postgres");
+        connectionProps.put("password", "admin");
+        Connection connection = null;
+        Statement statement = null;
+        try {
+            connection = DriverManager
+                    .getConnection("jdbc:postgresql://localhost:5432/test", connectionProps);
+            statement = connection.createStatement();
+            String query = "SELECT * FROM public.\"Cities\"";
+            ResultSet rs = statement.executeQuery(query);
+            while (rs.next()) {
+                String city = rs.getString("Name");
+                boolean isBusiness = rs.getBoolean("isBusiness");
+                data = (Object[][]) ArrayUtils.add(data, new Object[] {city, isBusiness});
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (statement != null) {
+                statement.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
+        }
+        return data;
     }
     private void sampleSearch(String destination, boolean isBusiness) throws Exception {
         SearchPage searchPage = PageFactory.init(driver, SearchPage.class);
@@ -100,5 +152,17 @@ public class SampleSearchTestNGTest {
     @Test
     public void testParamsFromTestNGXML(String destination, String isBusiness) throws Exception {
         sampleSearch(destination, isBusiness.equalsIgnoreCase("true"));
+    }
+    @Test(dataProvider = "file_provider")
+    public void testSampleSearchFromFile(String destination, String isBusiness) throws Exception {
+        sampleSearch(destination, isBusiness.equalsIgnoreCase("true"));
+    }
+    @Test(dataProvider = "service_provider")
+    public void testSampleSearchFromService(String destination, String isBusiness) throws Exception {
+        sampleSearch(destination, isBusiness.equalsIgnoreCase("true"));
+    }
+    @Test(dataProvider = "db_provider")
+    public void testSampleSearchFromDB(String destination, boolean isBusiness) throws Exception {
+        sampleSearch(destination, isBusiness);
     }
 }
