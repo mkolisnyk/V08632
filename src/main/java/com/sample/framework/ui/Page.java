@@ -20,7 +20,7 @@ import com.sample.framework.ui.controls.Control;
 
 public class Page {
     private static final long TIMEOUT = Configuration.timeout();
-    private static Page currentPage = null;
+    private static ConcurrentHashMap<String, Page> currentPages = new ConcurrentHashMap<String, Page>();
 
     private WebDriver driver;
 
@@ -42,10 +42,10 @@ public class Page {
         return null;
     }
     public static Page getCurrent() {
-        return currentPage;
+        return currentPages.get(Driver.getThreadName());
     }
     public static void setCurrent(Page newPage) {
-        currentPage = newPage;
+        currentPages.put(Driver.getThreadName(), newPage);
     }
     public WebDriver getDriver() {
         return driver;

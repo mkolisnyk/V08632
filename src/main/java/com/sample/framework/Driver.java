@@ -2,6 +2,7 @@ package com.sample.framework;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
@@ -15,7 +16,8 @@ public class Driver {
     private Driver() {
     }
 
-    private static WebDriver driver;
+    private static ConcurrentHashMap<String, WebDriver> driverThreadMap
+        = new ConcurrentHashMap<String, WebDriver>();
     private static final HashMap<String, Class<?>> driverMap = new HashMap<String, Class<?>>() {
         {
             put("chrome", ChromeDriver.class);
@@ -27,10 +29,11 @@ public class Driver {
     };
     public static void add(String browser, Capabilities capabilities) throws Exception {
         Class<?> driverClass = driverMap.get(browser);
-        driver = (WebDriver) driverClass.getConstructor(Capabilities.class).newInstance(capabilities);
+        WebDriver driver = (WebDriver) driverClass.getConstructor(Capabilities.class).newInstance(capabilities);
+        driverThreadMap.put(getThreadName(), driver);
     }
     public static WebDriver current() {
-        return driver;
+        return driverThreadMap.get(getThreadName());
     }
     public static String getThreadName() {
         return Thread.currentThread().getName() + "-" + Thread.currentThread().getId();
