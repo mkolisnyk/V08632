@@ -40,22 +40,21 @@ import com.sample.tests.pages.SearchResultsPage;
 
 public class SampleSearchTestNGTest {
 
-    private WebDriver driver;
+    //private WebDriver driver;
 
     @BeforeMethod(alwaysRun = true)
     public void setUp() throws Exception {
         DesiredCapabilities cap = new DesiredCapabilities();
         Driver.add(Configuration.get("browser"), cap);
-        driver = Driver.current();
-        driver.get(Configuration.get("url"));
+        Driver.current().get(Configuration.get("url"));
     }
 
     @AfterMethod(alwaysRun = true)
     public void tearDown() {
-        driver.quit();
+        Driver.current().quit();
     }
 
-    @DataProvider(name = "inclass_provider")
+    @DataProvider(name = "inclass_provider", parallel = true)
     public Object[][] createData() {
         return new Object[][] {
             { "London", true },
@@ -148,7 +147,7 @@ public class SampleSearchTestNGTest {
         return data;
     }
     private void sampleSearch(String destination, boolean isBusiness) throws Exception {
-        SearchPage searchPage = PageFactory.init(driver, SearchPage.class);
+        SearchPage searchPage = PageFactory.init(Driver.current(), SearchPage.class);
         searchPage.editDestination.setText(destination);
         searchPage.buttonDownShevron.click();
         searchPage.buttonTodaysDate.click();
@@ -159,7 +158,7 @@ public class SampleSearchTestNGTest {
         searchResultsPage.captureScreenShot("./image-" + destination + ".png");
     }
     
-    //@Test(dataProvider = "inclass_provider")
+    @Test(dataProvider = "inclass_provider")
     public void testSampleSearchFromTheSameClass(String destination, boolean isBusiness) throws Exception {
         sampleSearch(destination, isBusiness);
     }
@@ -184,7 +183,7 @@ public class SampleSearchTestNGTest {
     public void testSampleSearchFromDB(String destination, boolean isBusiness) throws Exception {
         sampleSearch(destination, isBusiness);
     }
-    @Test(dataProvider = "excel_provider")
+    //@Test(dataProvider = "excel_provider")
     public void testSampleSearchFromExcel(String destination, boolean isBusiness) throws Exception {
         sampleSearch(destination, isBusiness);
     }

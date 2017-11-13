@@ -46,4 +46,6 @@ dependencies {
    	compile 'info.cukes:cucumber-picocontainer:1.2.5'
    	compile 'info.cukes:cucumber-junit:1.2.5'
    	compile group: 'org.reflections', name: 'reflections', version: '0.9.9-RC1'
+	compile 'xml-apis:xml-apis:1.4.01'
+   	compile 'com.github.mkolisnyk:cucumber-runner:1.3'
 }
