@@ -40,4 +40,7 @@ dependencies {
    	compile 'org.postgresql:postgresql:42.1.4'
    	compile 'org.apache.poi:poi:3.17'
    	compile 'org.apache.poi:poi-ooxml:3.17'
+   	compile 'org.springframework:spring-core:5.0.1.RELEASE'
+   	compile 'org.springframework:spring-context:5.0.1.RELEASE'
+   	compile 'org.springframework:spring-test:5.0.1.RELEASE'
 }
