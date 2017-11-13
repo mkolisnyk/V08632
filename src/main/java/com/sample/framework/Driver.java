@@ -32,4 +32,7 @@ public class Driver {
     public static WebDriver current() {
         return driver;
     }
+    public static String getThreadName() {
+        return Thread.currentThread().getName() + "-" + Thread.currentThread().getId();
+    }
 }

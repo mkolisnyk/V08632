@@ -43,4 +43,7 @@ dependencies {
    	compile 'org.springframework:spring-core:5.0.1.RELEASE'
    	compile 'org.springframework:spring-context:5.0.1.RELEASE'
    	compile 'org.springframework:spring-test:5.0.1.RELEASE'
+   	compile 'info.cukes:cucumber-picocontainer:1.2.5'
+   	compile 'info.cukes:cucumber-junit:1.2.5'
+   	compile group: 'org.reflections', name: 'reflections', version: '0.9.9-RC1'
 }
