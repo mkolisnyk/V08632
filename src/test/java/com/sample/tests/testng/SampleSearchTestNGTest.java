@@ -15,6 +15,11 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -128,6 +133,20 @@ public class SampleSearchTestNGTest {
         }
         return data;
     }
+    @DataProvider(name = "excel_provider")
+    public Object[][] getDataFromExcel() throws Exception {
+        Object[][] data = new Object[][] {};
+        Workbook book = new XSSFWorkbook(new File("./src/test/resources/book.xlsx"));
+        Sheet sheet = book.getSheet("Locations");
+        for (int i = 1; i <= sheet.getLastRowNum(); i++) {
+            Row row = sheet.getRow(i);
+            String city = row.getCell(0).getStringCellValue();
+            boolean isBusiness = row.getCell(1).getBooleanCellValue();
+            data = (Object[][]) ArrayUtils.add(data, new Object[] {city, isBusiness});
+        }
+        book.close();
+        return data;
+    }
     private void sampleSearch(String destination, boolean isBusiness) throws Exception {
         SearchPage searchPage = PageFactory.init(driver, SearchPage.class);
         searchPage.editDestination.setText(destination);
@@ -140,29 +159,33 @@ public class SampleSearchTestNGTest {
         searchResultsPage.captureScreenShot("./image-" + destination + ".png");
     }
     
-    @Test(dataProvider = "inclass_provider")
+    //@Test(dataProvider = "inclass_provider")
     public void testSampleSearchFromTheSameClass(String destination, boolean isBusiness) throws Exception {
         sampleSearch(destination, isBusiness);
     }
-    @Test(dataProvider = "sample_provider", dataProviderClass = StaticProvider.class)
+    //@Test(dataProvider = "sample_provider", dataProviderClass = StaticProvider.class)
     public void testSampleSearchClassProvider(String destination, boolean isBusiness) throws Exception {
         sampleSearch(destination, isBusiness);
     }
     @Parameters({"destination", "isBusiness"})
-    @Test
+    //@Test
     public void testParamsFromTestNGXML(String destination, String isBusiness) throws Exception {
         sampleSearch(destination, isBusiness.equalsIgnoreCase("true"));
     }
-    @Test(dataProvider = "file_provider")
+    //@Test(dataProvider = "file_provider")
     public void testSampleSearchFromFile(String destination, String isBusiness) throws Exception {
         sampleSearch(destination, isBusiness.equalsIgnoreCase("true"));
     }
-    @Test(dataProvider = "service_provider")
+    //@Test(dataProvider = "service_provider")
     public void testSampleSearchFromService(String destination, String isBusiness) throws Exception {
         sampleSearch(destination, isBusiness.equalsIgnoreCase("true"));
     }
-    @Test(dataProvider = "db_provider")
+    //@Test(dataProvider = "db_provider")
     public void testSampleSearchFromDB(String destination, boolean isBusiness) throws Exception {
+        sampleSearch(destination, isBusiness);
+    }
+    @Test(dataProvider = "excel_provider")
+    public void testSampleSearchFromExcel(String destination, boolean isBusiness) throws Exception {
         sampleSearch(destination, isBusiness);
     }
 }
