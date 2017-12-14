@@ -1,0 +1,51 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+
+sourceCompatibility = 1.8
+version = '1.0'
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+        }
+        resources {
+            srcDir 'src/main/resources'
+        }
+    }
+    test {
+        java {
+            srcDir 'src/test/java'
+        }
+        resources {
+            srcDir 'src/test/resources'
+        }
+    }
+}
+
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+   	compile 'junit:junit:4.12'
+   	compile 'org.testng:testng:6.10'
+   	compile 'org.seleniumhq.selenium:selenium-java:3.6.0'
+   	compile group: 'commons-io', name: 'commons-io', version: '2.6'
+   	compile 'com.sparkjava:spark-core:2.5.3'
+   	compile 'commons-httpclient:commons-httpclient:3.1'
+   	compile 'commons-lang:commons-lang:2.6'
+   	compile 'org.postgresql:postgresql:42.1.4'
+   	compile 'org.apache.poi:poi:3.17'
+   	compile 'org.apache.poi:poi-ooxml:3.17'
+   	compile 'org.springframework:spring-core:5.0.1.RELEASE'
+   	compile 'org.springframework:spring-context:5.0.1.RELEASE'
+   	compile 'org.springframework:spring-test:5.0.1.RELEASE'
+   	compile 'info.cukes:cucumber-picocontainer:1.2.5'
+   	compile 'info.cukes:cucumber-junit:1.2.5'
+   	compile group: 'org.reflections', name: 'reflections', version: '0.9.9-RC1'
+	compile 'xml-apis:xml-apis:1.4.01'
+   	compile 'com.github.mkolisnyk:cucumber-runner:1.3'
+}
